@@ -30,6 +30,7 @@ let appointmentSchema = new mongoose.Schema({
 let recordSchema = new mongoose.Schema({
     patient: {
         type: mongoose.Schema.Types.ObjectId,
+        unique: true,
         ref: 'pacientes',
         required: true
     },
