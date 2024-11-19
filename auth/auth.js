@@ -35,7 +35,7 @@ let protegerRuta = roles => {
                 }
 
                 if (resultado.rol === 'patient' && resultado.id !== idPatient) {
-                    res.status(403)
+                    return res.status(403)
                     .send({ error: "Acceso no autorizado" });
                 }
 
