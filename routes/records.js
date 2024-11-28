@@ -58,12 +58,7 @@ router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
 router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res) => {
     const patientId = req.params.id;
 
-    if(req.user.rol === 'patient' && req.user.id !== patientId){
-        res.status(404)
-        .send({error: "Acceso no autorizado"});
-    }
-
-    Record.find({'patient._id': patientId})
+    Record.find({'patient': patientId})
     .then(resultado => {
         if(resultado.length > 0){
             res.status(200)
@@ -133,7 +128,9 @@ router.post('/:id/appointments', auth.protegerRuta(['admin', 'physio']), (req, r
 })
 
 router.delete('/:id', auth.protegerRuta(['admin', 'physio']), (req, res) => {
-    Record.find({'patient._id': patientId})
+    const patientId = req.params.id;
+    
+    Record.find({'patient': patientId})
     .then(resultado => {
         if(resultado.length > 0)
             res.status(200)
