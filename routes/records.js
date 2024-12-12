@@ -8,6 +8,8 @@ const router = express.Router()
 
 router.get('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     Record.find()
+    .populate('patient')
+    .populate('appointments.physio')
     .then(resultado => {
         if(resultado.length > 0)
             res.status(200)
@@ -26,6 +28,8 @@ router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     const name = req.query.name
 
     Patient.find({name: {$regex: name, $options: 'i'}})
+    .populate('patient')
+    .populate('appointments.physio')
     .then(resultado => {
         if(resultado.length > 0){
 
@@ -59,6 +63,8 @@ router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res)
     const patientId = req.params.id;
 
     Record.find({'patient': patientId})
+    .populate('patient')
+    .populate('appointments.physio')
     .then(resultado => {
         if(resultado.length > 0){
             res.status(200)
@@ -93,7 +99,8 @@ router.post('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
 })
 
 router.post('/:id/appointments', auth.protegerRuta(['admin', 'physio']), (req, res) => {
-    
+    const patientId = req.params.id;
+
     const newAppointment = {
         date: req.body.date,
         physio: req.body.physio,
@@ -102,7 +109,7 @@ router.post('/:id/appointments', auth.protegerRuta(['admin', 'physio']), (req, r
         observations: req.body.observations
     }
 
-    Record.findById(req.params.id)
+    Record.find({'patient': patientId})
     .then(resultado => {
         if(resultado){
             resultado.appointments.push(newAppointment);

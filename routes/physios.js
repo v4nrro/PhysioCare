@@ -109,7 +109,7 @@ router.put('/:id', auth.protegerRuta(['admin']), (req, res) => {
             specialty: req.body.specialty,
             licenseNumber: req.body.licenseNumber
         }
-    }, {new: true})
+    }, {new: true, runValidators: true})
     .then(resultado => {
         if(resultado)
             res.status(200)

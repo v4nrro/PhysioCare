@@ -105,7 +105,7 @@ router.put('/:id', auth.protegerRuta(['admin', 'physio']), (req, res) => {
             address: req.body.address,
             insuranceNumber: req.body.insuranceNumber
         }
-    }, {new: true})
+    }, {new: true, runValidators: true})
     .then(resultado => {
         if(resultado){
             res.status(200)
