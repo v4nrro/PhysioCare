@@ -3,26 +3,22 @@ const bcrypt = require('bcrypt');
 
 const Patient = require('../models/patient.js');
 const User = require('../models/user.js');
-const auth = require('../auth/auth');
 
 const router = express.Router();
 
-router.get('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.get('/', (req, res) => {
     Patient.find()
     .then(resultado => {
         if (resultado.length > 0)
-            res.status(200)
-               .send({result: resultado});
+            res.render('patients_list', {patients: resultado});
         else
-            res.status(404)
-               .send({error: "No hay pacientes en el sistema."});
+            res.render('error', {error: "No hay pacientes en el sistema."});
     }).catch(error => {
-        res.status(500)
-           .send({error: "Error interno del servidor"});
+        res.render('error', {error: "Error interno del servidor"});
     });
 });
 
-router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.get('/find', (req, res) => {
     const surname = req.query.surname;
 
     Patient.find({surname: { $regex: surname, $options: 'i'}})
@@ -39,7 +35,7 @@ router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     });
 });
 
-router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res) => {
+router.get('/:id', (req, res) => {
     Patient.findById(req.params.id)
     .then(resultado => {
         if (resultado)
@@ -54,7 +50,7 @@ router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res)
     });
 });
 
-router.post('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.post('/', (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(passwordCifrada => {
         let newUser = new User({
@@ -96,7 +92,7 @@ router.post('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     });
 })
 
-router.put('/:id', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.put('/:id', (req, res) => {
     Patient.findByIdAndUpdate(req.params.id, {
         $set: {
             name: req.body.name,
@@ -121,7 +117,7 @@ router.put('/:id', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     });
 });
 
-router.delete("/:id", auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.delete("/:id", (req, res) => {
     Patient.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)

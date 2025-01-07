@@ -1,0 +1,19 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Patients | List{% endblock %}
+
+{% block content %}
+<h1 class="display-2">Patients</h1>
+
+<table class="table">
+  <thead class="thead-dark">
+  </thead>
+  <tbody>
+    {% for patient in patients %}
+    <tr>
+      <td>{{ patient.name }} {{ patient.surname }}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

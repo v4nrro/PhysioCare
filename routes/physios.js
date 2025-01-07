@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 
 const Physio = require('../models/physio.js');
 const User = require('../models/user.js');
-const auth = require('../auth/auth');
 
 const router = express.Router();
 
@@ -57,7 +56,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.post('/', auth.protegerRuta(['admin']), (req, res) => {
+router.post('/', (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(passwordCifrada => {
         let newUser = new User({
@@ -101,7 +100,7 @@ router.post('/', auth.protegerRuta(['admin']), (req, res) => {
     });
 })
 
-router.put('/:id', auth.protegerRuta(['admin']), (req, res) => {
+router.put('/:id', (req, res) => {
     Physio.findByIdAndUpdate(req.params.id, {
         $set: {
             name: req.body.name,
@@ -124,7 +123,7 @@ router.put('/:id', auth.protegerRuta(['admin']), (req, res) => {
     })
 })
 
-router.delete('/:id', auth.protegerRuta(['admin']), (req, res) => {
+router.delete('/:id', (req, res) => {
     Physio.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)

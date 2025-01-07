@@ -2,11 +2,10 @@ const express = require('express')
 
 const Record = require('../models/record')
 const Patient = require('../models/patient')
-const auth = require('../auth/auth');
 
 const router = express.Router()
 
-router.get('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.get('/', (req, res) => {
     Record.find()
     .populate('patient')
     .populate('appointments.physio')
@@ -24,7 +23,7 @@ router.get('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     })
 })
 
-router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.get('/find', (req, res) => {
     const name = req.query.name
 
     Patient.find({name: {$regex: name, $options: 'i'}})
@@ -59,7 +58,7 @@ router.get('/find', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     })
 })
 
-router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res) => {
+router.get('/:id', (req, res) => {
     const patientId = req.params.id;
 
     Record.find({'patient': patientId})
@@ -80,7 +79,7 @@ router.get('/:id', auth.protegerRuta(['admin', 'physio', 'patient']), (req, res)
     })
 })
 
-router.post('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.post('/', (req, res) => {
     const newRecord = new Record({
         patient: req.body.patient,
         medicalRecord: req.body.medicalRecord,
@@ -98,7 +97,7 @@ router.post('/', auth.protegerRuta(['admin', 'physio']), (req, res) => {
     })
 })
 
-router.post('/:id/appointments', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.post('/:id/appointments', (req, res) => {
     const patientId = req.params.id;
 
     const newAppointment = {
@@ -134,7 +133,7 @@ router.post('/:id/appointments', auth.protegerRuta(['admin', 'physio']), (req, r
     })
 })
 
-router.delete('/:id', auth.protegerRuta(['admin', 'physio']), (req, res) => {
+router.delete('/:id', (req, res) => {
     const patientId = req.params.id;
     
     Record.find({'patient': patientId})
