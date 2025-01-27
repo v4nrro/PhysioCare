@@ -1,0 +1,15 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Physio | Detail{% endblock %}
+
+{% block content %}
+
+    <h1>Patient Detail</h1>
+    <div>
+        <p><strong>Name:</strong> {{ patient.name }} {{ patient.surname }}</p>
+        <p><strong>Birth date:</strong> {{ patient.birthDate }} </p>
+        <p><strong>Address:</strong> {{ patient.address }}</p>
+        <p><strong>Insurance Number:</strong> {{ patient.insuranceNumber }}</p>
+    </div>
+
+{% endblock %}

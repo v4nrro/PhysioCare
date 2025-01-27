@@ -1,0 +1,32 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Record | Detail{% endblock %}
+
+{% block content %}
+
+    <h1>Record Detail</h1>
+    <h2>Patient</h2>
+    <p><strong>Name:</strong> {{ record[0].patient.name }} {{ record[0].patient.surname }}</p>
+    <p><strong>Birth date:</strong> {{ record[0].patient.birthDate }} </p>
+    <p><strong>Address:</strong> {{ record[0].patient.address }}</p>
+    <p><strong>Insurance Number:</strong> {{ record[0].patient.insuranceNumber }}</p>
+    <h2>Medical record</h2>
+    <p>{{ record[0].medicalRecord }}</p>
+    <h2>Appointments</h2>
+    {% for appointment in record[0].appointments %}
+        <p><strong>Date:</strong> {{ appointment.date }} </p>
+        <p><strong>Diagnosis:</strong> {{ appointment.diagnosis }} </p>
+        <p><strong>Treatment:</strong> {{ appointment.treatment }} </p>
+        <p><strong>Observations:</strong> {{ appointment.observations }} </p>
+
+        {% if appointment.physio %}
+            <h3>Physio</h3>
+            <p><strong>Name:</strong> {{ appointment.physio.name }} {{ appointment.physio.surname }}</p>
+            <p><strong>Specialty:</strong> {{ appointment.physio.specialty }} </p>
+            <p><strong>License Number:</strong> {{ appointment.physio.licenseNumber }}</p>
+        {% endif %}
+        
+        <p>-----------------------------------------------------------------------------------------------------------------------</p>
+    {% endfor %}
+
+{% endblock %}

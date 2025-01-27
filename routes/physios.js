@@ -10,15 +10,12 @@ router.get('/', (req, res) => {
     Physio.find()
     .then(resultado => {
         if(resultado.length > 0)
-            res.status(200)
-            .send({result: resultado});
+            res.render('physios_list', {physios: resultado});
         else
-            res.status(404)
-            .send({error: "No hay fisios en el sistema."});
+            res.render('error', {error: "No hay fisios en el sistema."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor."});
     });
 });
 
@@ -35,8 +32,7 @@ router.get('/find', (req, res) => {
             .send({error: "No se han encontrado fisios que cumplan esos criterios."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."});
+        res.render('error', {error: "Error interno del servidor."});
     })
 });
 
@@ -44,15 +40,12 @@ router.get('/:id', (req, res) => {
     Physio.findById(req.params.id)
     .then(resultado => {
         if(resultado)
-            res.status(200)
-            .send({result: resultado});
+            res.render('physio_detail', {physio: resultado});
         else
-            res.status(404)
-            .send({error: "Fisio no encontrado."});
+        res.render('error', {error: "Fisio no encontrado."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor."});
     })
 });
 
@@ -127,15 +120,12 @@ router.delete('/:id', (req, res) => {
     Physio.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)
-            res.status(200)
-            .send({result: resultado});
+            res.redirect(req.baseUrl)
         else
-            res.status(404)
-            .send({error: "El fisio a eliminar no existe."});
+            res.render('error', {error: "El fisio a eliminar no existe."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor."})
     })
 })
 

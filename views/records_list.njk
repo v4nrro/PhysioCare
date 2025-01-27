@@ -1,0 +1,30 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Records | List{% endblock %}
+
+{% block content %}
+<h1 class="display-2">Records</h1>
+
+<table class="table">
+  <thead class="thead-dark">
+  </thead>
+  <tbody>
+    {% for record in records %}
+    <tr>
+        <td>
+            {{ record.patient.name }} {{ record.patient.surname }}
+        </td>
+        <td>
+            <a class="btn btn-success" href="/records/{{ record.patient.id }}">View details</a>
+            <a class="btn btn-primary" href="/records/{{ record.patient.id }}/appointments">Add appointment</a>
+
+            <form style="display:inline" action="/records/{{ record.id }}" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

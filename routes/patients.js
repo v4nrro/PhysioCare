@@ -39,14 +39,11 @@ router.get('/:id', (req, res) => {
     Patient.findById(req.params.id)
     .then(resultado => {
         if (resultado)
-            res.status(200)
-               .send({result: resultado});
+            res.render('patient_detail', {patient: resultado});
         else
-            res.status(404)
-               .send({error: "Paciente no encontrado"});
-    }).catch(error => {
-        res.status(500)
-           .send({error: "Error interno del servidor"});
+            res.render('error', {error: "Este paciente no existe en el sistema."});
+    }).catch(() => {
+        res.render('error', {error: "Error interno del servidor"});
     });
 });
 
@@ -121,15 +118,12 @@ router.delete("/:id", (req, res) => {
     Patient.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)
-            res.status(200)
-            .send({result: resultado});
+            res.redirect(req.baseUrl);
         else
-            res.status(404)
-            .send({error: "El paciente a eliminar no existe."})
+        res.render('error', {error: "Error borrando paciente"});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor"});
     })
 });
 

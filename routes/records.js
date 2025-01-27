@@ -11,15 +11,12 @@ router.get('/', (req, res) => {
     .populate('appointments.physio')
     .then(resultado => {
         if(resultado.length > 0)
-            res.status(200)
-            .send({result: resultado})
+            res.render('records_list', {records: resultado});
         else
-            res.status(404)
-            .send({error: "No se encontraron expedientes en el sistema."})
+            res.render('error', {error: "No se encontraron expedientes en el sistema."})
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor."})
     })
 })
 
@@ -66,16 +63,13 @@ router.get('/:id', (req, res) => {
     .populate('appointments.physio')
     .then(resultado => {
         if(resultado.length > 0){
-            res.status(200)
-            .send({result: resultado});
+            res.render('record_detail', {record: resultado});
         }
         else
-            res.status(404)
-            .send({error: "Expediente no encontrado."});
+            res.render('error', {error: "Expediente no encontrado."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor"})
+        res.render('error', {error: "Error interno del servidor"})
     })
 })
 
@@ -134,20 +128,15 @@ router.post('/:id/appointments', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    const patientId = req.params.id;
-    
-    Record.find({'patient': patientId})
+    Record.findByIdAndDelete(req.params.id)
     .then(resultado => {
-        if(resultado.length > 0)
-            res.status(200)
-            .send({result: resultado});
+        if(resultado)
+            res.redirect(req.baseUrl);
         else
-            res.status(404)
-            .send({error: "Expediente no encontrado"});
+            res.render('error', {error: "Expediente no encontrado"});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor."})
     })
 })
 
