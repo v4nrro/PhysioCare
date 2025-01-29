@@ -28,6 +28,10 @@ body{
     
     header{
         display: flex;
+        height: 80px;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
         background: rgb(0,0,0);
         background: linear-gradient(190deg, rgba(0,0,0,1) 0%, rgba(61,82,160,1) 0%, rgba(134,151,196,1) 100%);
     

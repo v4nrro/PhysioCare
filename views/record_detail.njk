@@ -6,6 +6,9 @@
 
     <h1>Record Detail</h1>
     <h2>Patient</h2>
+    {% if record[0].patient.image %}
+        <img src="/public/uploads/{{ record[0].patient.image }}" class="mt-4 mb-4" width="250px" style="border-radius: 8px;" alt="foto">
+    {% endif %}
     <p><strong>Name:</strong> {{ record[0].patient.name }} {{ record[0].patient.surname }}</p>
     <p><strong>Birth date:</strong> {{ record[0].patient.birthDate }} </p>
     <p><strong>Address:</strong> {{ record[0].patient.address }}</p>
@@ -21,6 +24,9 @@
 
         {% if appointment.physio %}
             <h3>Physio</h3>
+            {% if appointment.physio.image %}
+                <img src="/public/uploads/{{ appointment.physio.image }}" class="mt-4 mb-4" width="250px" style="border-radius: 8px;" alt="foto">
+            {% endif %}
             <p><strong>Name:</strong> {{ appointment.physio.name }} {{ appointment.physio.surname }}</p>
             <p><strong>Specialty:</strong> {{ appointment.physio.specialty }} </p>
             <p><strong>License Number:</strong> {{ appointment.physio.licenseNumber }}</p>

@@ -1,14 +1,9 @@
 {% extends "base.njk" %}
 
-{% block pageTitle %}Patients | List{% endblock %}
+{% block pageTitle %}Patients by surname | List{% endblock %}
 
 {% block content %}
-<h1 class="display-2">Patients</h1>
-
-<form class="mt-4 mb-4" action="/patients/find" method="get">
-    <label for="surname">Surname: </label>
-    <input type="text" placeholder="Search by surname..." name="surname"/>
-</form>
+<h1 class="display-2">Patients by surname</h1>
 
 <table class="table">
   <thead class="thead-dark">

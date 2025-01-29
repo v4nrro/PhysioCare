@@ -5,11 +5,15 @@
 {% block content %}
 
     <h1>Patient Detail</h1>
+    {% if patient.image %}
+        <img src="/public/uploads/{{ patient.image }}" class="mt-4 mb-4" width="250px" style="border-radius: 8px;" alt="foto">
+    {% endif %}
     <div>
         <p><strong>Name:</strong> {{ patient.name }} {{ patient.surname }}</p>
         <p><strong>Birth date:</strong> {{ patient.birthDate }} </p>
         <p><strong>Address:</strong> {{ patient.address }}</p>
         <p><strong>Insurance Number:</strong> {{ patient.insuranceNumber }}</p>
+        <a class="btn btn-primary mt-4 mb-4" href="/patients/{{ patient.id }}/edit">Edit</a>
     </div>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 
+const upload = require(__dirname + '/../utils/uploads.js');
 const Patient = require('../models/patient.js');
 const User = require('../models/user.js');
 
@@ -18,20 +19,33 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/new', (req, res) => {
+    res.render('patient_add');
+});
+
+router.get('/:id/edit', (req, res) => {
+    Patient.findById(req.params['id']).then(resultado => {
+        if (resultado) {
+            res.render('patient_edit', {patient: resultado});
+        } else {
+            res.render('error', {error: "Paciente no encontrado"});
+        }
+    }).catch(error => {
+        res.render('error', {error: "Error interno del servidor"});
+    });
+});
+
 router.get('/find', (req, res) => {
     const surname = req.query.surname;
 
     Patient.find({surname: { $regex: surname, $options: 'i'}})
     .then(resultado => {
         if (resultado.length > 0)
-            res.status(200)
-               .send({result: resultado});
+            res.render('patients_list_surname', {patients: resultado});
         else
-            res.status(404)
-               .send({error: "Paciente no encontrado"});
+            res.render('error', {error: "Paciente no encontrado"});
     }).catch(error => {
-        res.status(500)
-           .send({error: "Error interno del servidor"});
+        res.render('error',{error: "Error interno del servidor"});
     });
 });
 
@@ -47,72 +61,70 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(passwordCifrada => {
-        let newUser = new User({
-            login: req.body.login,
-            password: passwordCifrada,
-            rol: "patient"
-        });
-    
-        newUser.save()
-        .then(resultado =>{
-            let userId = resultado._id;
-
-            let newPatient = new Patient({
-                _id: userId,
-                name: req.body.name,
-                surname: req.body.surname,
-                birthDate: req.body.birthDate,
-                address: req.body.address,
-                insuranceNumber: req.body.insuranceNumber
-            });
-
-            newPatient.save()
-            .then(resultado => {
-                res.status(201)
-                   .send({result: resultado});
-            }).catch(error => {
-                res.status(400)
-                   .send({error: error});
-            });
-        })
-        .catch(error => {
-            res.status(500)
-            .send({error: "Error interno del servidor."});
-        });
-    })
-    .catch(error => {
-        res.status(400)
-        .send({error: error})
+router.post('/', upload.upload.single('image'), (req, res) => {
+    let newUser = new User({
+        login: req.body.login,
+        password: req.body.password,
+        rol: "patient"
     });
-})
 
-router.put('/:id', (req, res) => {
-    Patient.findByIdAndUpdate(req.params.id, {
-        $set: {
+    newUser.save()
+    .then(resultado =>{
+        let userId = resultado._id;
+
+        let newPatient = new Patient({
+            _id: userId,
             name: req.body.name,
             surname: req.body.surname,
             birthDate: req.body.birthDate,
             address: req.body.address,
             insuranceNumber: req.body.insuranceNumber
-        }
-    }, {new: true, runValidators: true})
-    .then(resultado => {
-        if(resultado){
-            res.status(200)
-            .send({result: resultado})
-        }
-        else
-            res.status(400)
-            .send({error: "Error actualizando los datos del paciente."});
+        });
+        if (req.file) newPatient.image = req.file.filename;
+
+        newPatient.save()
+        .then(() => {
+            res.redirect(req.baseUrl);
+        }).catch(error => {
+            res.render('error', {error: "Error insertando paciente ", error});
+        });
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor"})
+        res.render('error', {error: "Error creando usuario."});
+    });
+})
+
+router.post('/:id', upload.upload.single('image'), (req, res) => {
+    Patient.findById(req.params.id)
+    .then(resultado => {
+        if(resultado){
+            resultado.name = req.body.name;
+            resultado.surname = req.body.surname;
+            resultado.birthDate = req.body.birthDate;
+            resultado.insuranceNumber = req.body.insuranceNumber;
+            resultado.address = req.body.address;
+
+            if(req.file){
+                resultado.image = req.file.filename;
+            }
+
+            resultado.save()
+            .then(() => {
+                res.redirect(req.baseUrl);
+            })
+            .catch(error => {
+                res.render('error', {error: "Error guardando el paciente."})
+            })
+        }
+        else{
+            res.render('error',{error: "Error actualizando los datos del paciente."});
+        }
+    })
+    .catch(error => {
+        res.render('error', {error: "Error interno del servidor."})
     });
 });
+
 
 router.delete("/:id", (req, res) => {
     Patient.findByIdAndDelete(req.params.id)

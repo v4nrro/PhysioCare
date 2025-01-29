@@ -21,9 +21,9 @@ router.get('/', (req, res) => {
 })
 
 router.get('/find', (req, res) => {
-    const name = req.query.name
+    const surname = req.query.surname
 
-    Patient.find({name: {$regex: name, $options: 'i'}})
+    Patient.find({surname: {$regex: surname, $options: 'i'}})
     .populate('patient')
     .populate('appointments.physio')
     .then(resultado => {

@@ -9,7 +9,7 @@ dotenv.config();
 
 const patients = require('./routes/patients');
 const physios = require('./routes/physios');
-const records = require('./routes/records')
+const records = require('./routes/records');
 
 mongoose.connect(process.env.DATABASE_URL);
 
@@ -23,9 +23,9 @@ nunjucks.configure('views', {
 
 app.set('view engine', 'njk');
 
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
       let method = req.body._method;
@@ -33,6 +33,7 @@ app.use(methodOverride(function (req, res) {
       return method;
     } 
 }));
+
 app.use(express.static('public'));
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));

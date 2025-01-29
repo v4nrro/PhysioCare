@@ -5,10 +5,14 @@
 {% block content %}
 
     <h1>Physio Detail</h1>
+    {% if physio.image %}
+        <img src="/public/uploads/{{ physio.image }}" class="mt-4 mb-4" width="250px" style="border-radius: 8px;" alt="foto">
+    {% endif %}
     <div>
         <p><strong>Name:</strong> {{ physio.name }} {{ physio.surname }}</p>
         <p><strong>Specialty:</strong> {{ physio.specialty }} </p>
         <p><strong>License Number:</strong> {{ physio.licenseNumber }}</p>
+        <a class="btn btn-primary mt-4 mb-4" href="/physios/{{ physio.id }}/edit">Edit</a>
     </div>
 
 {% endblock %}

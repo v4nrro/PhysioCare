@@ -1,0 +1,30 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Physios by specialty | List{% endblock %}
+
+{% block content %}
+<h1 class="display-2">Physios by specialty</h1>
+
+<table class="table">
+  <thead class="thead-dark">
+  </thead>
+  <tbody>
+    {% for physio in physios %}
+    <tr>
+        <td>
+            {{ physio.name }} {{ physio.surname }}
+        </td>
+        <td>
+            <a class="btn btn-success" href="/physios/{{ physio.id }}">View details</a>
+            <a class="btn btn-primary" href="/physios/{{ physio.id }}/edit">Edit</a>
+
+            <form style="display:inline" action="/physios/{{ physio.id }}" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
