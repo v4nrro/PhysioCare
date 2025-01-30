@@ -22,7 +22,7 @@
         <td>
             <a class="btn btn-success" href="/patients/{{ patient.id }}">View details</a>
             <a class="btn btn-primary" href="/patients/{{ patient.id }}/edit">Edit</a>
-            <a class="btn btn-warning" href="#">Create record</a>
+            <a class="btn btn-warning" href="/records/{{ patient.id }}/new">Create record</a>
 
             <form style="display:inline" action="/patients/{{ patient.id }}" method="post">
                 <input type="hidden" name="_method" value="delete" />

@@ -1,0 +1,34 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Record | New{% endblock %}
+
+{% block content %}
+
+    <h1>New Record</h1>
+
+    {% if errores.general %}
+        <p class="alert alert-danger">{{ errores.general }}</p>
+    {% endif %}
+
+    <form action="/records" method="post">
+        <div class="form-group mt-3">
+            <label for="medicalRecord">Patient:</label>
+            <input 
+                type="text" 
+                class="form-control"  
+                value="{{patient.name}} {{patient.surname}}" 
+                disabled
+            >
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="medicalRecord">Medical record:</label>
+            <input type="text" class="form-control" name="medicalRecord">
+        </div> 
+
+        <input type="hidden" name="patient" value="{{patient._id}}" />
+
+        <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+    </form>
+
+{% endblock %}

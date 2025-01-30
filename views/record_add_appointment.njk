@@ -1,0 +1,60 @@
+{% extends "base.njk" %}
+
+{% block pageTitle %}Appointment | New{% endblock %}
+
+{% block content %}
+
+    <h1>New Appointment</h1>
+
+    {% if errores.general %}
+        <p class="alert alert-danger">{{ errores.general }}</p>
+    {% endif %}
+
+    <form action="/records/:id/appointments" method="post">
+        <div class="form-group mt-3">
+            <label for="medicalRecord">Patient:</label>
+            <input 
+                type="text" 
+                class="form-control"  
+                value="{{patient.name}} {{patient.surname}}" 
+                disabled
+            >
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="physio">Physio:</label>            
+            <select class="form-select" name="physio" aria-label="Default select example">
+                {% for physio in physios %}
+                    <option value="{{physio._id}}">{{physio.name}} {{physio.surname}} ({{physio.specialty}})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="date">Date:</label>
+            {% if errores.date %}
+                <p class="text-danger">{{ errores.date }}</p>
+            {% endif %}
+            <input type="date" class="form-control" name="date"
+                placeholder="Birth date...">
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="diagnosis">Diagnosis:</label>
+            <input type="text" class="form-control" name="diagnosis">
+        </div> 
+
+        <div class="form-group mt-3">
+            <label for="treatment">Treatment:</label>
+            <input type="text" class="form-control" name="treatment">
+        </div> 
+
+        <div class="form-group mt-3">
+            <label for="observations">Observations:</label>
+            <input type="text" class="form-control" name="observations">
+        </div> 
+
+        <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+    </form>
+
+{% endblock %}

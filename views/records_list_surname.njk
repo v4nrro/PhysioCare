@@ -21,10 +21,10 @@
         </td>
         <td>
             <a class="btn btn-success" href="/records/{{ record.patient.id }}">View details</a>
-            <a class="btn btn-primary" href="/records/{{ record.patient.id }}/appointments/new">Add appointment</a>
+            <a class="btn btn-primary" href="/records/{{ record.patient.id }}/appointments">Add appointment</a>
 
             <form style="display:inline" action="/records/{{ record.id }}" method="post">
-                <input type="hidden" name="_method" value="delete"/>
+                <input type="hidden" name="_method" value="delete" />
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
