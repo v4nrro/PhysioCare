@@ -10,7 +10,7 @@ let userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "La contraseña es obligatoria."],
-        minlength: [7, "La contraseña debe tener mínimo 7 carácteres."],
+        minlength: [4, "La contraseña debe tener mínimo 4 carácteres."],
     },
     rol: {
         type: String,

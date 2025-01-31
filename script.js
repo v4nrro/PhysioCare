@@ -2,6 +2,32 @@ const mongoose = require('mongoose');
 const Patient = require('./models/patient');
 const Physio = require('./models/physio');
 const Record = require('./models/record');
+const User = require('./models/user');
+const bcrypt = require('bcrypt');
+
+async function createUsers() {
+    const users = [
+        new User({
+            login: 'admin',
+            password: await bcrypt.hash('admin', 10),
+            rol: 'admin'
+        }),
+        new User({
+            login: 'patient',
+            password: await bcrypt.hash('patient', 10),
+            rol: 'patient'
+        }),
+        new User({
+            login: 'physio',
+            password: await bcrypt.hash('physio', 10),
+            rol: 'physio'
+        })
+    ];
+
+    // Save all users using Promise.all
+    const savedUsers = await Promise.all(users.map(user => user.save()));
+    console.log('Added users:', savedUsers);
+}
 
 // Function to load initial data
 async function loadData() {
@@ -10,6 +36,8 @@ async function loadData() {
       await Patient.deleteMany({});
       await Physio.deleteMany({});
       await Record.deleteMany({});
+      await User.deleteMany({});
+
       
      // Create some patients  
       const patients = [
@@ -46,6 +74,11 @@ async function loadData() {
       // Save all patients using Promise.all
       const savedPatients = await Promise.all(patients.map(patient => patient.save()));
       console.log('Added patients:', savedPatients);
+
+      async function encrypt(password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        return hashedPassword;
+    }
       
       // Create several physios, at least one for each specialty
       const physios = [
@@ -157,6 +190,9 @@ async function loadData() {
       // Save all files using Promise.all
       const savedRecords = await Promise.all(records.map(record => record.save()));
       console.log('Added records:', savedRecords);
+
+      // Create users
+      await createUsers().catch(console.error);
   
       mongoose.disconnect();
       console.log('Data successfully loaded and disconnected from MongoDB');
