@@ -122,11 +122,11 @@ router.post('/:id', upload.upload.single('image'), auth.authentication, auth.rol
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('physio_edit', {errores: "Error guardando el fisio."})
+                res.render('error', {error: "Error guardando el fisio."})
             })
         }  
         else{
-            res.render('physio_edit',{errores: "Error actualizando los datos del fisio."});
+            res.render('error',{error: "Error actualizando los datos del fisio."});
         }
     })
     .catch(error => {

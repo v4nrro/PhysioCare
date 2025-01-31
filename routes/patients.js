@@ -120,11 +120,11 @@ router.post('/:id', upload.upload.single('image'), auth.authentication, auth.rol
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('patient_edit', {errores: "Error guardando paciente."});
+                res.render('error', {error: "Error guardando paciente."});
             })
         }
         else{
-            res.render('patient_edit', {errores: "Error actualizando datos del paciente."});
+            res.render('error', {error: "Error actualizando datos del paciente."});
         }
     })
     .catch(error => {

@@ -107,7 +107,7 @@ router.post('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) 
         res.redirect(req.baseUrl)
     })
     .catch(error => {
-        res.render('record_add', {errores: "Error insertando record."});
+        res.render('error', {error: "Error insertando record."});
     })
 })
 
