@@ -78,7 +78,7 @@ router.get('/find', auth.authentication, auth.rol(['admin', 'physio']), (req, re
     })
 })
 
-router.get('/:id', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
+router.get('/:id', auth.authentication, (req, res) => {
     const patientId = req.params.id;
 
     Record.find({'patient': patientId})

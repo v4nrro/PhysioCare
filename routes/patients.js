@@ -50,7 +50,7 @@ router.get('/find', auth.authentication, auth.rol(['admin', 'physio']), (req, re
     });
 });
 
-router.get('/:id', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
+router.get('/:id', auth.authentication, (req, res) => {
     Patient.findById(req.params.id)
     .then(resultado => {
         if (resultado)

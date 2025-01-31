@@ -31,6 +31,7 @@ router.post('/login', (req, res) => {
                     }
                     
                     req.session.usuario = user.login;
+                    req.session.usuario_id = user.id;
                     req.session.rol = user.rol;
                     
                     res.render('index');

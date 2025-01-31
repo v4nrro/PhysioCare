@@ -11,6 +11,16 @@
     <a class="btn btn-primary" href="/physios/new">Create Physio</a>
     {% endif %}
 
+    {% if (session and session.usuario and (session.rol==="patient")) %}
+    &nbsp;&nbsp;
+    <a class="btn btn-primary" href="/patients/{{session.usuario_id}}">My profile</a>
+    {% endif %}
+
+    {% if (session and session.usuario and (session.rol==="patient")) %}
+    &nbsp;&nbsp;
+    <a class="btn btn-primary" href="/records/{{session.usuario_id}}">My Record</a>
+    {% endif %}
+
     &nbsp;&nbsp;
 
     {% if (session and session.usuario) %}

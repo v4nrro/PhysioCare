@@ -13,7 +13,10 @@
         <p><strong>Birth date:</strong> {{ patient.birthDate }} </p>
         <p><strong>Address:</strong> {{ patient.address }}</p>
         <p><strong>Insurance Number:</strong> {{ patient.insuranceNumber }}</p>
-        <a class="btn btn-primary mt-4 mb-4" href="/patients/{{ patient.id }}/edit">Edit</a>
+
+        {% if (session and session.usuario and (session.rol!=="patient")) %}
+            <a class="btn btn-primary mt-4 mb-4" href="/patients/{{ patient.id }}/edit">Edit</a>
+        {% endif %}
     </div>
 
 {% endblock %}
