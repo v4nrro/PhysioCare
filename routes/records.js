@@ -107,7 +107,7 @@ router.post('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) 
         res.redirect(req.baseUrl)
     })
     .catch(error => {
-        res.render('error', {error: "Error insertando record.", error});
+        res.render('record_add', {errores: "Error insertando record."});
     })
 })
 
@@ -132,14 +132,14 @@ router.post('/:id/appointments', auth.authentication, auth.rol(['admin', 'physio
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('error', {error: "Error interno del servidor.", error})
+                res.render('error', {errores: "Error insertando cita."})
             })
         }
         else
-            res.render('error', {error: "Expediente no encontrado."});
+            res.render('error', {errores: "Expediente no encontrado."});
     })
     .catch(error => {
-        res.render('error', {error: "Error interno del servidor.", error})
+        res.render('error', {error: "Error interno del servidor."})
     })
 })
 

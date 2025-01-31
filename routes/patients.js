@@ -20,7 +20,7 @@ router.get('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) =
     });
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     res.render('patient_add');
 });
 
@@ -62,7 +62,7 @@ router.get('/:id', auth.authentication, (req, res) => {
     });
 });
 
-router.post('/', upload.upload.single('image'),  (req, res) => {
+router.post('/', upload.upload.single('image'), auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(hashedPassword => {
         let newUser = new User({
@@ -89,15 +89,15 @@ router.post('/', upload.upload.single('image'),  (req, res) => {
             .then(() => {
                 res.redirect(req.baseUrl);
             }).catch(error => {
-                res.render('error', {error: "Error insertando paciente ", error});
+                res.render('patient_add', {errores: "Error insertando paciente."});
             });
         })
         .catch(error => {
-            res.render('error', {error: "Error creando usuario."});
+            res.render('patient_add', {errores: "Error creando usuario."});
         });
     })
     .catch(error => {
-        res.render('error', { error: "Error en el servidor", details: error });
+        res.render('error', { error: "Error en el servidor.", details: error });
     });
 })
 
@@ -120,11 +120,11 @@ router.post('/:id', upload.upload.single('image'), auth.authentication, auth.rol
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('error', {error: "Error guardando el paciente."})
+                res.render('patient_edit', {errores: "Error guardando paciente."});
             })
         }
         else{
-            res.render('error',{error: "Error actualizando los datos del paciente."});
+            res.render('patient_edit', {errores: "Error actualizando datos del paciente."});
         }
     })
     .catch(error => {

@@ -6,66 +6,53 @@
 
     <h1>New Patient</h1>
 
-    {% if errores.general %}
-        <p class="alert alert-danger">{{ errores.general }}</p>
+    {% if errores %}
+        <div class="alert alert-danger">
+            <p class="text-danger">{{ errores }}</p>
+        </div>    
     {% endif %}
 
     <form action="/patients" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="login">Login:</label>
-            {% if errores.login %}
-                <p class="text-danger">{{ errores.login }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="login" 
-                placeholder="Login...">
+                placeholder="Login..." value="{{user.login}}">
         </div>
 
         <div class="form-group">
             <label for="password">Password:</label>
-            {% if errores.name %}
-                <p class="text-danger">{{ errores.password }}</p>
-            {% endif %}
             <input type="password" class="form-control" name="password" 
-                placeholder="Password...">
+                placeholder="Password..." value="{{user.password}}">
         </div>
 
         <div class="form-group">
             <label for="name">Name:</label>
-            {% if errores.name %}
-                <p class="text-danger">{{ errores.name }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="name" 
-                placeholder="Name...">
+                placeholder="Name..." value="{{patient.name}}">
         </div>
 
         <div class="form-group">
             <label for="surname">Surname:</label>            
             <input type="text" class="form-control" name="surname"
-                placeholder="Surname...">
+                placeholder="Surname..." value="{{patient.surname}}">
         </div>
 
         <div class="form-group">
             <label for="birthDate">Birth date:</label>
-            {% if errores.birthDate %}
-                <p class="text-danger">{{ errores.birthDate }}</p>
-            {% endif %}
             <input type="date" class="form-control" name="birthDate"
-                placeholder="Birth date...">
+                placeholder="Birth date..." value="{{patient.birthDate}}">
         </div>
 
         <div class="form-group">
             <label for="address">Address:</label>
             <input type="text" class="form-control" name="address"
-                placeholder="Address..." />
+                placeholder="Address..." value="{{patient.address}}"/>
         </div>
 
         <div class="form-group">
             <label for="insuranceNumber">Insurance number:</label>
-            {% if errores.insuranceNumber %}
-                <p class="text-danger">{{ errores.insuranceNumber }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="insuranceNumber" 
-                placeholder="Insurance number...">
+                placeholder="Insurance number..." value="{{patient.insuranceNumber}}">
         </div>
 
         <div class="form-group">

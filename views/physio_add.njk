@@ -6,34 +6,25 @@
 
     <h1>New Physio</h1>
 
-    {% if errores.general %}
-        <p class="alert alert-danger">{{ errores.general }}</p>
+    {% if errores %}
+        <p class="alert alert-danger">{{ errores }}</p>
     {% endif %}
 
     <form action="/physios" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="login">Login:</label>
-            {% if errores.login %}
-                <p class="text-danger">{{ errores.login }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="login" 
                 placeholder="Login...">
         </div>
 
         <div class="form-group">
             <label for="password">Password:</label>
-            {% if errores.name %}
-                <p class="text-danger">{{ errores.password }}</p>
-            {% endif %}
             <input type="password" class="form-control" name="password" 
                 placeholder="Password...">
         </div>
 
         <div class="form-group">
             <label for="name">Name:</label>
-            {% if errores.name %}
-                <p class="text-danger">{{ errores.name }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="name" 
                 placeholder="Name...">
         </div>
@@ -57,9 +48,6 @@
 
         <div class="form-group">
             <label for="licenseNumber">License number:</label>
-            {% if errores.licenseNumber %}
-                <p class="text-danger">{{ errores.licenseNumber }}</p>
-            {% endif %}
             <input type="text" class="form-control" name="licenseNumber" 
                 placeholder="License number...">
         </div>

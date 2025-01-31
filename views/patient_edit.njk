@@ -8,16 +8,13 @@
 
     {% if (patient) %}
 
-        {% if errores.general %}
-            <p class="alert alert-danger">{{ errores.general }}</p>
+        {% if errores %}
+            <p class="alert alert-danger">{{ errores }}</p>
         {% endif %}
 
         <form action="/patients/{{ patient.id }}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Name:</label>
-                {% if errores.name %}
-                    <p class="text-danger">{{ errores.name }}</p>
-                {% endif %}
                 <input type="text" class="form-control" name="name" 
                     placeholder="Name..." value="{{patient.name}}">
             </div>
@@ -30,9 +27,6 @@
 
             <div class="form-group">
                 <label for="birthDate">Birth date:</label>
-                {% if errores.birthDate %}
-                    <p class="text-danger">{{ errores.birthDate }}</p>
-                {% endif %}
                 <input type="date" class="form-control" name="birthDate"
                     placeholder="Birth date..." value="{{patient.birthDate}}">
             </div>
@@ -45,9 +39,6 @@
 
             <div class="form-group">
                 <label for="insuranceNumber">Insurance number:</label>
-                {% if errores.insuranceNumber %}
-                    <p class="text-danger">{{ errores.insuranceNumber }}</p>
-                {% endif %}
                 <input type="text" class="form-control" name="insuranceNumber" 
                     placeholder="Insurance number..." value="{{patient.insuranceNumber}}">
             </div>

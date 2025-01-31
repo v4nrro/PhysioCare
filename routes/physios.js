@@ -80,15 +80,15 @@ router.post('/', upload.upload.single('image'), auth.authentication, auth.rol(['
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('error', {error: "Error insertando fisio ", error});
+                res.render('physio_add', {errores: "Error insertando fisio."});
             })
         })
         .catch(error => {
-            res.render('error', {error: "Error interno del servidor.", error});
+            res.render('physio_add', {errores: "Error insertando usuario."});
         });
     })
     .catch(error => {
-        res.render('error', { error: "Error en el servidor", details: error });
+        res.render('error', { error: "Error en el servidor." });
     });
 })
 
@@ -122,11 +122,11 @@ router.post('/:id', upload.upload.single('image'), auth.authentication, auth.rol
                 res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.render('error', {error: "Error guardando el fisio."})
+                res.render('physio_edit', {errores: "Error guardando el fisio."})
             })
         }  
         else{
-            res.render('error',{error: "Error actualizando los datos del fisio."});
+            res.render('physio_edit',{errores: "Error actualizando los datos del fisio."});
         }
     })
     .catch(error => {

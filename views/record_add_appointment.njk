@@ -6,8 +6,8 @@
 
     <h1>New Appointment</h1>
 
-    {% if errores.general %}
-        <p class="alert alert-danger">{{ errores.general }}</p>
+    {% if errores %}
+        <p class="alert alert-danger">{{ errores }}</p>
     {% endif %}
 
     <form action="/records/{{patient.id}}/appointments" method="post">
@@ -32,9 +32,6 @@
 
         <div class="form-group mt-3">
             <label for="date">Date:</label>
-            {% if errores.date %}
-                <p class="text-danger">{{ errores.date }}</p>
-            {% endif %}
             <input type="date" class="form-control" name="date"
                 placeholder="Birth date...">
         </div>
