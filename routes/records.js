@@ -3,10 +3,11 @@ const express = require('express')
 const Record = require('../models/record')
 const Patient = require('../models/patient')
 const Physio = require('../models/physio')
+const auth = require('../auth/auth.js')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     Record.find()
     .populate('patient')
     .populate('appointments.physio')
@@ -21,7 +22,7 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id/new', (req, res) => {
+router.get('/:id/new', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     Patient.findById(req.params.id)
     .then(resultado => {
         res.render('record_add', {patient: resultado});
@@ -31,7 +32,7 @@ router.get('/:id/new', (req, res) => {
     })
 });
 
-router.get('/:id/appointments/new', (req, res) => {
+router.get('/:id/appointments/new', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     Patient.findById(req.params.id)
     .then(patient => {
         Physio.find()
@@ -47,7 +48,7 @@ router.get('/:id/appointments/new', (req, res) => {
     })
 });
 
-router.get('/find', (req, res) => {
+router.get('/find', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     const surname = req.query.surname
 
     Patient.find({surname: {$regex: surname, $options: 'i'}})
@@ -77,7 +78,7 @@ router.get('/find', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     const patientId = req.params.id;
 
     Record.find({'patient': patientId})
@@ -95,7 +96,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     const newRecord = new Record({
         patient: req.body.patient,
         medicalRecord: req.body.medicalRecord,
@@ -110,7 +111,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.post('/:id/appointments', (req, res) => {
+router.post('/:id/appointments', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     const patientId = req.params.id;
 
     const newAppointment = {
@@ -146,7 +147,7 @@ router.post('/:id/appointments', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
     Record.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)

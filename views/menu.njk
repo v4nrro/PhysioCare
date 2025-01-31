@@ -5,5 +5,9 @@
     &nbsp;&nbsp;
     <a class="btn btn-primary" href="/physios/new">Create Physio</a>
     &nbsp;&nbsp;
-    <a class="btn btn-dark" href="/auth/login">Log In</a>
+    {% if (session and session.usuario) %}
+        <a class="btn btn-dark" href="/auth/logout">Logout</a>
+    {% else %}
+        <a class="btn btn-dark" href="/auth/login">Login</a>
+    {% endif %}
 </div>

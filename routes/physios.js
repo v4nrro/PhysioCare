@@ -1,13 +1,14 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 
 const upload = require(__dirname + '/../utils/uploads.js');
 const Physio = require('../models/physio.js');
 const User = require('../models/user.js');
+const bcrypt = require('bcrypt');
+const auth = require('../auth/auth.js')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', auth.authentication, auth.rol(['admin']), (req, res) => {
     Physio.find()
     .then(resultado => {
         if(resultado.length > 0)
@@ -20,11 +21,11 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', auth.authentication, auth.rol(['admin']), (req, res) => {
     res.render('physio_add');
 });
 
-router.get('/find', (req, res) => {
+router.get('/find', auth.authentication, auth.rol(['admin']), (req, res) => {
     const specialty = req.query.specialty
 
     Physio.find({specialty: { $regex: specialty, $options: 'i'}})
@@ -39,7 +40,7 @@ router.get('/find', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', auth.authentication, auth.rol(['admin']), (req, res) => {
     Physio.findById(req.params.id)
     .then(resultado => {
         if(resultado)
@@ -52,40 +53,46 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.post('/', upload.upload.single('image'), (req, res) => {
-    let newUser = new User({
-        login: req.body.login,
-        password: req.body.password,
-        rol: "physio"
-    });
+router.post('/', upload.upload.single('image'), auth.authentication, auth.rol(['admin']), (req, res) => {
+    bcrypt.hash(req.body.password, 10)
+    .then(hashedPassword => {
+        let newUser = new User({
+            login: req.body.login,
+            password: hashedPassword,
+            rol: "physio"
+        });
 
-    newUser.save()
-    .then(resultado =>{
-        let userId = resultado._id;
+        newUser.save()
+        .then(resultado =>{
+            let userId = resultado._id;
 
-        let newPhysio = new Physio({
-            _id: userId,
-            name: req.body.name,
-            surname: req.body.surname,
-            specialty: req.body.specialty,
-            licenseNumber: req.body.licenseNumber
-        })
-        if (req.file) newPhysio.image = req.file.filename;
+            let newPhysio = new Physio({
+                _id: userId,
+                name: req.body.name,
+                surname: req.body.surname,
+                specialty: req.body.specialty,
+                licenseNumber: req.body.licenseNumber
+            })
+            if (req.file) newPhysio.image = req.file.filename;
 
-        newPhysio.save()
-        .then(() => {
-            res.redirect(req.baseUrl);
+            newPhysio.save()
+            .then(() => {
+                res.redirect(req.baseUrl);
+            })
+            .catch(error => {
+                res.render('error', {error: "Error insertando fisio ", error});
+            })
         })
         .catch(error => {
-            res.render('error', {error: "Error insertando fisio ", error});
-        })
+            res.render('error', {error: "Error interno del servidor.", error});
+        });
     })
     .catch(error => {
-        res.render('error', {error: "Error interno del servidor.", error});
+        res.render('error', { error: "Error en el servidor", details: error });
     });
 })
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', auth.authentication, auth.rol(['admin']), (req, res) => {
     Physio.findById(req.params['id']).then(resultado => {
         if (resultado) {
             res.render('physio_edit', {physio: resultado});
@@ -97,7 +104,7 @@ router.get('/:id/edit', (req, res) => {
     });
 });
 
-router.post('/:id', upload.upload.single('image'), (req, res) => {
+router.post('/:id', upload.upload.single('image'), auth.authentication, auth.rol(['admin']), (req, res) => {
     Physio.findByIdAndUpdate(req.params.id)
     .then(resultado => {
         if(resultado){
@@ -127,7 +134,7 @@ router.post('/:id', upload.upload.single('image'), (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', auth.authentication, auth.rol(['admin']), (req, res) => {
     Physio.findByIdAndDelete(req.params.id)
     .then(resultado => {
         if(resultado)

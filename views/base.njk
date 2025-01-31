@@ -6,7 +6,10 @@
         <link rel="stylesheet" href="/public/css/styles.css"/>
     </head>
     <body>
-        {% include "menu.njk" %}
+        {% block menu %}
+            {% include "menu.njk" %}
+        {% endblock %}
+        
         <div class="container">
             {% block content %}
 
