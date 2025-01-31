@@ -20,7 +20,7 @@ router.get('/', auth.authentication, auth.rol(['admin', 'physio']), (req, res) =
     });
 });
 
-router.get('/new', auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
+router.get('/new', (req, res) => {
     res.render('patient_add');
 });
 
@@ -62,7 +62,7 @@ router.get('/:id', auth.authentication, auth.rol(['admin', 'physio']), (req, res
     });
 });
 
-router.post('/', upload.upload.single('image'), auth.authentication, auth.rol(['admin', 'physio']), (req, res) => {
+router.post('/', upload.upload.single('image'),  (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then(hashedPassword => {
         let newUser = new User({

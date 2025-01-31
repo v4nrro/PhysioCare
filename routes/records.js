@@ -122,28 +122,24 @@ router.post('/:id/appointments', auth.authentication, auth.rol(['admin', 'physio
         observations: req.body.observations
     }
 
-    Record.find({'patient': patientId})
+    Record.findOne({'patient': patientId})
     .then(resultado => {
         if(resultado){
             resultado.appointments.push(newAppointment);
 
             resultado.save()
             .then(resultado => {
-                res.status(201)
-                .send({result: resultado})
+                res.redirect(req.baseUrl);
             })
             .catch(error => {
-                res.status(500)
-                .send({error: "Error interno del servidor."})
+                res.render('error', {error: "Error interno del servidor.", error})
             })
         }
         else
-            res.status(404)
-            .send({error: "Expediente no encontrado."});
+            res.render('error', {error: "Expediente no encontrado."});
     })
     .catch(error => {
-        res.status(500)
-        .send({error: "Error interno del servidor."})
+        res.render('error', {error: "Error interno del servidor.", error})
     })
 })
 

@@ -10,7 +10,7 @@
         <p class="alert alert-danger">{{ errores.general }}</p>
     {% endif %}
 
-    <form action="/records/:id/appointments" method="post">
+    <form action="/records/{{patient.id}}/appointments" method="post">
         <div class="form-group mt-3">
             <label for="medicalRecord">Patient:</label>
             <input 
