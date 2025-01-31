@@ -1,10 +1,18 @@
 <div class="alert alert-secondary">
     <a class="btn btn-dark" href="/">Home</a>
+
+    {% if (session and session.usuario and (session.rol==="admin" or session.rol==="physio")) %}
     &nbsp;&nbsp;
-    <a class="btn btn-primary" href="/patients/new">Create Patient</a>
+        <a class="btn btn-primary" href="/patients/new">Create Patient</a>
+    {% endif %}
+
+    {% if (session and session.usuario and (session.rol==="admin")) %}
     &nbsp;&nbsp;
     <a class="btn btn-primary" href="/physios/new">Create Physio</a>
+    {% endif %}
+
     &nbsp;&nbsp;
+
     {% if (session and session.usuario) %}
         <a class="btn btn-dark" href="/auth/logout">Logout</a>
     {% else %}
